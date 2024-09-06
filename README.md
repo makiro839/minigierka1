@@ -1,0 +1,1 @@
+# minigierka1
