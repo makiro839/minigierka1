@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minigierka - Zapamiętaj cyfry!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        #game, #inputSection, #message {
+            display: none;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        input {
+            padding: 10px;
+            margin-top: 20px;
+            width: 200px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Minigierka - Zapamiętaj cyfry!</h1>
+    
+    <div id="start">
+        <button class="button" onclick="startGame()">Zacznij grę</button>
+    </div>
+
+    <div id="game">
+        <p>Zapamiętaj ten ciąg cyfr:</p>
+        <h2 id="numberSequence"></h2>
+    </div>
+
+    <div id="inputSection">
+        <p>Wpisz ciąg cyfr, który zapamiętałeś:</p>
+        <input type="text" id="userInput" maxlength="10" />
+        <br>
+        <button class="button" onclick="checkSequence()">Sprawdź</button>
+    </div>
+
+    <div id="message">
+        <h2>Gratulacje, oczyściłeś swoją skrzynkę pocztową!</h2>
+    </div>
+
+    <script>
+        let level = 1;
+        let sequence = "";
+        let levels = 3;
+
+        function startGame() {
+            document.getElementById('start').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
+            nextLevel();
+        }
+
+        function nextLevel() {
+            let numDigits = 4 + level - 1;  // Zwiększ liczbę cyfr z każdym poziomem
+            sequence = generateSequence(numDigits);
+            document.getElementById('numberSequence').innerText = sequence;
+
+            // Pokaż ciąg cyfr przez 3 sekundy, a potem przejdź do etapu wpisywania
+            setTimeout(() => {
+                document.getElementById('game').style.display = 'none';
+                document.getElementById('inputSection').style.display = 'block';
+            }, 3000);
+        }
+
+        function generateSequence(length) {
+            let seq = "";
+            for (let i = 0; i < length; i++) {
+                seq += Math.floor(Math.random() * 10);  // Losowe cyfry od 0 do 9
+            }
+            return seq;
+        }
+
+        function checkSequence() {
+            let userInput = document.getElementById('userInput').value;
+            if (userInput === sequence) {
+                level++;
+                if (level > levels) {
+                    endGame();
+                } else {
+                    alert("Brawo! Przechodzisz na kolejny poziom!");
+                    document.getElementById('inputSection').style.display = 'none';
+                    document.getElementById('userInput').value = '';
+                    document.getElementById('game').style.display = 'block';
+                    nextLevel();
+                }
+            } else {
+                alert("Niestety, to nie ten ciąg cyfr. Spróbuj ponownie!");
+            }
+        }
+
+        function endGame() {
+            document.getElementById('inputSection').style.display = 'none';
+            document.getElementById('message').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
+
